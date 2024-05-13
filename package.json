@@ -11,5 +11,8 @@
     "url": "git+https://github.com/rutarj/fragments.git"
   },
   "author": "Rutarj",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "prettier": "3.2.5"
+  }
 }
