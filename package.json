@@ -19,5 +19,10 @@
     "eslint-plugin-react": "^7.34.1",
     "globals": "^15.2.0",
     "prettier": "3.2.5"
+  },
+  "dependencies": {
+    "pino": "^9.1.0",
+    "pino-http": "^10.1.0",
+    "pino-pretty": "^11.0.0"
   }
 }
