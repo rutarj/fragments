@@ -1,6 +1,7 @@
 // src/routes/index.js
 
 const express = require('express');
+const { createSuccessResponse } = require('../response');
 
 // version and author from package.json
 const { version, author } = require('../../package.json');
@@ -28,6 +29,10 @@ router.get('/', (req, res) => {
     githubUrl: 'https://github.com/rutarj/fragments.git',
     version,
   });
+});
+
+router.get('/health', (req, res) => {
+  res.json(createSuccessResponse({ message: 'API is healthy' }));
 });
 
 module.exports = router;

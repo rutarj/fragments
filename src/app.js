@@ -15,11 +15,17 @@ const pino = require('pino-http')({
   // Use our default logger instance, which is already configured
   logger,
 });
-
+const { createErrorResponse } = require('./response');
 // Create an express app instance we can use to attach middleware and HTTP routes
 const app = express();
 // modifications to src/app.js
 
+const indexRoutes = require('./routes');
+const apiRoutes = require('./routes/api/get');
+
+// Use routes
+app.use('/', indexRoutes);
+app.use('/v1', apiRoutes); // Note the '/v1' prefix
 
 // Use pino logging middleware
 app.use(pino);
@@ -71,6 +77,10 @@ app.use((err, req, res, next) => {
       code: status,
     },
   });
+});
+
+app.use((req, res) => {
+  res.status(404).json(createErrorResponse(404, 'not found'));
 });
 
 // Export our `app` so we can access it in server.js
