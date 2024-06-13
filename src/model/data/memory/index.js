@@ -19,7 +19,7 @@ function writeFragmentData(ownerId, id, buffer) {
   return data.put(ownerId, id, buffer);
 }
 
-// Read a fragment's data from memory db. Returns a Promise
+// Reading// Read a fragment's data from memory db. Returns a Promise
 function readFragmentData(ownerId, id) {
   return data.get(ownerId, id);
 }
