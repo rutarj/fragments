@@ -83,5 +83,17 @@ app.use((req, res) => {
   res.status(404).json(createErrorResponse(404, 'not found'));
 });
 
+const { version, author } = require('../package.json');
+
+// Define the route handler for GET /health
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    version: version,
+    author: author,
+    githubUrl: 'https://github.com/rutarj/fragments',
+  });
+});
+
 // Export our `app` so we can access it in server.js
 module.exports = app;
