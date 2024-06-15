@@ -41,6 +41,17 @@ describe('POST /v1/fragments', () => {
     expect(res.body.fragment).toEqual(fragment);
   });
 
+  test('Location header set using API_URL environment variable', async () => {
+    process.env.API_URL = 'http://localhost:8080';
+    const res = await request(app)
+      .post('/v1/fragments')
+      .send('this is a testing fragment')
+      .set('Content-type', 'text/plain')
+      .auth('user1@email.com', 'password1');
+    expect(res.statusCode).toBe(201);
+    expect(res.headers.location).toBe(`http://localhost:8080/v1/fragments/${res.body.fragment.id}`);
+  });
+
   test('Post text/plain content-type with charset', async () => {
     const res = await request(app)
       .post('/v1/fragments')

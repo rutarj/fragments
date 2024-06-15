@@ -1,5 +1,6 @@
 const { Fragment } = require('../../model/fragment');
 const logger = require('../../logger');
+const api = process.env.API_URL || 'http://localhost:8080';
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 
 module.exports = async (req, res) => {
@@ -14,10 +15,15 @@ module.exports = async (req, res) => {
       });
       await fragment.setData(req.body);
       await fragment.save();
+      res.set('location', `${api}/v1/fragments/${fragment.id}`);
       res.status(201).send(createSuccessResponse({ fragment }));
+      res.send(createSuccessResponse({ fragment }));
       logger.info({ fragment: fragment }, `Fragment have been posted successfully`);
-    } catch {
-      res.status(404).json(createErrorResponse(404, 'Unable to POST the fragment'));
+    } catch (err) {
+      logger.error(err, 'Error posting fragment');
+      if (!res.headersSent) {
+        res.status(500).json(createErrorResponse(500, 'Unable to POST the fragment'));
+      }
     }
   }
 };
