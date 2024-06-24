@@ -1,30 +1,29 @@
-FROM node
-
-FROM node:20.11.0
+# Stage 1: Build Stage
+FROM node:20.11.0 AS build
 
 LABEL maintainer="Rutarj Shah <rshah103@myseneca.ca>"
-LABEL description="Fragmnets Microsoervice"
-
-ENV PORT=8080
-
-ENV NPM_CONFIG_LOGLEVEL=warn
-
-
-ENV NPM_CONFIG_COLOR=false
-
+LABEL description="Fragments Microservice"
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm install
+RUN npm install --only=production
+
+# Stage 2: Production Stage
+FROM node:20.11.0-slim
+
+ENV PORT=8080
+ENV NPM_CONFIG_LOGLEVEL=warn
+ENV NPM_CONFIG_COLOR=false
+
+WORKDIR /app
+
+COPY --from=build /app .
 
 COPY ./src ./src
-
 COPY ./tests/.htpasswd ./tests/.htpasswd
 
-CMD npm start
+CMD ["npm", "start"]
 
 EXPOSE 8080
-
-
