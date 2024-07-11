@@ -5,10 +5,10 @@
 #
 # To create a new tag, we also need to update the package.json version:
 #
-# $ npm version 0.5.0
+# $ npm version 0.7.0
 #
 # This will update `version` in package.json to `0.5.0` and create a new
-# tag, `v0.5.0` in git. We'll then use this tag (i.e., `v0.5.0`) to tag
+# tag, `v0.7.0` in git. We'll then use this tag (i.e., `v0.5.0`) to tag
 # our docker image before we push to AWS
 name: cd
 
@@ -38,6 +38,7 @@ jobs:
       # `Error: The security token included in the request is expired`
       - name: Configure AWS Credentials using Secrets
         uses: aws-actions/configure-aws-credentials@v4
+
         with:
           # Use our GitHub Encrypted Secrets via secrets.*
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
