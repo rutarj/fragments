@@ -1,29 +1,35 @@
+// src/routes/api/post.js
+
+const response = require('../../response');
 const { Fragment } = require('../../model/fragment');
 const logger = require('../../logger');
-const api = process.env.API_URL || 'http://localhost:8080';
-const { createSuccessResponse, createErrorResponse } = require('../../response');
+const url = process.env.API_URL;
 
 module.exports = async (req, res) => {
+  logger.debug('Post: ' + req.body);
   if (!Fragment.isSupportedType(req.get('Content-Type'))) {
-    res.status(415).json(createErrorResponse(415, 'Content-Type is not supported'));
-  } else {
-    try {
-      const fragment = new Fragment({
-        ownerId: req.user,
-        type: req.get('Content-type'),
-        size: req.body.length,
-      });
-      await fragment.setData(req.body);
-      await fragment.save();
-      res.set('location', `${api}/v1/fragments/${fragment.id}`);
-      res.status(201).send(createSuccessResponse({ fragment }));
-      res.send(createSuccessResponse({ fragment }));
-      logger.info({ fragment: fragment }, `Fragment have been posted successfully`);
-    } catch (err) {
-      logger.error(err, 'Error posting fragment');
-      if (!res.headersSent) {
-        res.status(500).json(createErrorResponse(500, 'Unable to POST the fragment'));
-      }
-    }
+    return res.status(415).json(response.createErrorResponse(415, 'Unsupported Media Type'));
+  }
+  try {
+    const fragment = new Fragment({
+      ownerId: req.user,
+      type: req.get('content-type'),
+    });
+    await fragment.save();
+    await fragment.setData(req.body);
+
+    logger.debug('A New Fragment has been created: ' + JSON.stringify(fragment));
+    res.set('Content-Type', fragment.type);
+    res.setHeader('Location', url + '/v1/fragments/' + fragment.id);
+
+    res.status(201).json(
+      response.createSuccessResponse({
+        status: 'ok',
+        fragment: fragment,
+      })
+    );
+  } catch (err) {
+    logger.error(`Error occurred while creating a new fragment: ${err.stack}`);
+    res.status(500).json(response.createErrorResponse(500, err));
   }
 };

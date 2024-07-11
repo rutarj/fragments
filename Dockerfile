@@ -20,6 +20,9 @@ ENV NPM_CONFIG_COLOR=false
 WORKDIR /app
 
 COPY --from=build /app .
+#Assignment 2 
+
+RUN npm ci --production
 
 COPY ./src ./src
 COPY ./tests/.htpasswd ./tests/.htpasswd
