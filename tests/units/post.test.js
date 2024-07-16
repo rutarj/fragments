@@ -44,4 +44,14 @@ describe('POST /fragments', () => {
       `${process.env.API_URL}/v1/fragments/${JSON.parse(res.text).fragment.id}`
     );
   });
+
+  test('text/plain test', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set({ 'Content-Type': 'text/plain' })
+      .send('Text/plain test');
+    expect(res.statusCode).toBe(201);
+    expect(JSON.parse(res.text).status).toBe('ok');
+  });
 });
