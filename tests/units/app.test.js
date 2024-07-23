@@ -44,15 +44,16 @@ describe('API Routes', () => {
     });
   });
 
-  test('GET /unknown-route should return a 404 error', async () => {
-    const response = await request(app).get('/unknown-route');
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({
-      status: 'error',
-      error: {
-        code: 404,
-        message: 'not found',
-      },
-    });
-  });
+  'GET /unknown-route should return a 404 error',
+    async () => {
+      const response = await request(app).get('/unknown-route');
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({
+        status: 'error',
+        error: {
+          code: 404,
+          message: 'not found',
+        },
+      });
+    };
 });
