@@ -7,7 +7,7 @@ const express = require('express');
 const { authenticate } = require('../auth');
 
 // version and author from package.json
-const { version, author } = require('../../package.json');
+const { version } = require('../../package.json');
 
 // Create a router that we can use to mount our API
 const router = express.Router();
@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
   res.setHeader('Cache-Control', 'no-cache');
   res.status(200).json(
     createSuccessResponse({
-      author,
+      author: 'Rutarj',
       githubUrl: 'https://github.com/rutarj/fragments',
       version,
       // Include the hostname in the response
