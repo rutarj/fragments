@@ -2,7 +2,7 @@
   "taskDefinitionArn": "arn:aws:ecs:us-east-1:305656745239:task-definition/fragments-task:2",
   "containerDefinitions": [
     {
-      "name": "fragments",
+      "name": "fragments-container",
       "image": "rutarj21/fragments:latest",
       "cpu": 256,
       "memoryReservation": 512,
@@ -18,32 +18,12 @@
       "essential": true,
       "environment": [
         {
-          "name": "AWS_COGNITO_POOL_ID",
-          "value": "us-east-1_HjiTkCyjp"
-        },
-        {
-          "name": "API_URL",
-          "value": "http://localhost:80"
-        },
-        {
           "name": "PORT",
           "value": "80"
         },
         {
-          "name": "AWS_ACCESS_KEY_ID",
-          "value": "ASIAUOKUPZULZDH44JX4"
-        },
-        {
-          "name": "AWS_SECRET_ACCESS_KEY",
-          "value": "61iANZJb9ZMBD6U/T1j4pI2865ACTGFcCz0cXBU"
-        },
-        {
-          "name": "LOG_LEVEL",
-          "value": "silent"
-        },
-        {
-          "name": "AWS_COGNITO_CLIENT_ID",
-          "value": "30mlldrfkqt4ae1iukjrcehtdq"
+          "name": "AWS_S3_BUCKET_NAME",
+          "value": "rshah103-fragments"
         }
       ],
       "environmentFiles": [],
