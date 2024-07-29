@@ -1,17 +1,14 @@
-# tests/integration/post-fragments-json.hurl
-# Authenticated POST to /v1/fragments
+# 1. Authenticated POST to /v1/fragments
 POST http://localhost:8080/v1/fragments
-# We're sending a JSON fragment
+# We're sending a plain text fragment
 Content-Type: text/plain
 # Include HTTP Basic Auth credentials
 [BasicAuth]
 user1@email.com:password1
-# Body of the request goes in ```...``` when it's a JSON string
-{
-  "fragment": "This is a fragment!"
-}
+# Body of the request goes in ```...``` when it's a string
+`This is a fragment!`
 
-# 1. We expect to get back an HTTP 201
+# 2. We expect to get back an HTTP 201
 HTTP/1.1 201
 # We have various assertions about the response that we want to check
 [Asserts]
@@ -28,19 +25,32 @@ jsonpath "$.fragment.created" isString
 jsonpath "$.fragment.updated" isString
 jsonpath "$.fragment.type" == "text/plain"
 # 19 is the length of our fragment data: 'This is a fragment!'
-jsonpath "$.fragment.size" == 39
+jsonpath "$.fragment.size" == 19
 # Capture the Location URL into a variable named `url`
 [Captures]
 url: header "Location"
 
-# 2. Try to GET the fragment we just posted by its URL
+# 3. Try to GET the fragment we just posted by its URL
 GET {{url}}
 [BasicAuth]
 user1@email.com:password1
-
 
 HTTP/1.1 200
 Content-Type: application/json; charset=utf-8
 Content-Length: 30
 [Asserts]
 body == "{\"status\":\"ok\",\"fragments\":[]}"
+
+# 4. Try to Delete the fragment by its URL
+DELETE {{url}}
+[BasicAuth]
+user1@email.com:password1
+
+HTTP/1.1 200
+
+# 5. Try to GET the fragment we just posted by its URL
+GET {{url}}
+[BasicAuth]
+user1@email.com:password1
+
+HTTP/1.1 200
