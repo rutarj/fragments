@@ -7,8 +7,8 @@
 #
 # $ npm version 0.7.0
 #
-# This will update `version` in package.json to `0.7.0` and create a new
-# tag, `v0.7.0` in git. We'll then use this tag (i.e., `v0.7.0`) to tag
+# This will update `version` in package.json to `0.5.0` and create a new
+# tag, `v0.7.0` in git. We'll then use this tag (i.e., `v0.5.0`) to tag
 # our docker image before we push to AWS
 name: cd
 
@@ -94,15 +94,16 @@ jobs:
           environment-variables: |
             LOG_LEVEL=silent
             NODE_ENV=production
-            AWS_SESSION_TOKEN=${{ secrets.AWS_SESSION_TOKEN }}
-            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_COGNITO_POOL_ID=${{ secrets.AWS_COGNITO_POOL_ID }}
-            API_URL=${{ secrets.API_URL }}
+            AWS_SESSION_TOKEN=e61iANZJb9ZMBD6U/T1j4pI2865ACTGFcCz0cXBU aws_session_token=IQoJb3JpZ2luX2VjEEcaCXVzLXdlc3QtMiJHMEUCIDRlx/dH5PDA44ZOqhiNX6VfDJ3eXPlr5oPteWaXDuO1AiEA58AwWUVArkfqht5uO14GPM3CVyFAG27EHOisRuBq6h0qrgIIMBABGgwzMDU2NTY3NDUyMzkiDM0fKtk5XTrdhO4jaiqLAo66+0O14XipD15FUIaNAc/WKYrObKuJL+EFcSIJ9zMFVuf/yfWtqbxTfpCE753zDSizeIz88Dqwf9omf/Gmmdfc27dDYXE05aMuh3e1t6cLOgicb2wGnUDzSRM9GePPBLXX4O0DnRKQCzCTKowFlzIdYVHooPSXczP1FYUXK8nN46MsGWuTtpfmUGxP6Q29XgElOKzytA6/xSdO12gCuwiVrh0Mnc8fPkv4emmGrIYms6IJYfsGORwpW8tq3qVgiFFRDLUPbvPGAof9nd3BCFy7gOomKoZFzjDmFZ/37CjbHcvgCGPbCpZFfEeaKwxAKFmiWok9uZc/f6x9/FKm0LOidfoD3XQS5CRfdjCT4p61BjqdAcRZp5mW9RE6WXeLM0OlJFvhpLI9L7733eyjDkO6jOXYjqopPaIoxuXBEvFQPlrVBkXAqUktcKDxEMmP8yL386mPYZRpIT3+el+js21ZQjK2C7iFq00QoMbf2CrGPwP1GBCOnbbkdw4lgwUuG1XSTF1ebC5yuLuLPkNEgqWAPNTVoigWwlEQ1raJC3aZkQnauhUE6Enkc3z6sXnZ9oY=
+            AWS_ACCESS_KEY_ID=ASIAUOKUPZULZDH44JX4
+            AWS_SECRET_ACCESS_KEY=61iANZJb9ZMBD6U/T1j4pI2865ACTGFcCz0cXBU
+            AWS_COGNITO_POOL_ID=us-east-1_HjiTkCyjp
+
+            API_URL=http://localhost:80 
             PORT=80
-            AWS_COGNITO_CLIENT_ID=${{ secrets.AWS_COGNITO_CLIENT_ID }}
-            AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}
-            AWS_DYNAMODB_TABLE_NAME=${{ secrets.AWS_DYNAMODB_TABLE_NAME }}
+            AWS_COGNITO_CLIENT_ID=30mlldrfkqt4ae1iukjrcehtdq
+            AWS_S3_BUCKET_NAME=rutarj21-fragments
+            AWS_DYNAMODB_TABLE_NAME=fragments
 
       # Deploy the updated Amazon ECS task definition
       - name: Deploy Amazon ECS task definition
