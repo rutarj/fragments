@@ -53,5 +53,15 @@ app.get('/health', (req, res) => {
   });
 });
 
+app.use((req, res) => {
+  res.status(404).json({
+    status: 'error',
+    error: {
+      code: 404,
+      message: 'not found',
+    },
+  });
+});
+
 // Export our `app` so we can access it in server.js
 module.exports = app;

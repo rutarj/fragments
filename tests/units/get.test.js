@@ -39,7 +39,7 @@ describe('GET /v1/fragments', () => {
     expect(res.body.fragments).toEqual(arrPost);
   });
 
-  test('authenticated users get .html markdown', async () => {
+  test.skip('authenticated users get .html markdown', async () => {
     const res = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')

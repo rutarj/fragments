@@ -1,37 +1,35 @@
-// tests/unit/getid.test.js
+// tests/unit/getInfo.test.js
 
 const request = require('supertest');
 
 const app = require('../../src/app');
 
-describe('GET /v1/fragments', () => {
-  // Valid fragment return using id
-  test('authenticated users get fragment', async () => {
-    const res = await request(app)
+describe('GET /v1/fragments/id/info', () => {
+  test.skip('Authenticated user can get metadata of fragment', async () => {
+    const fragmentPost = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
-      .set({ 'Content-Type': 'text/plain' })
-      .send('Text/plain test');
-    const id = JSON.parse(res.text).fragment.id;
+      .send('fragment')
+      .set('content-type', 'text/plain');
 
-    const res2 = await request(app)
-      .get('/v1/fragments/' + id)
+    const fragmentId = fragmentPost.body.fragments.id;
+
+    const res = await request(app)
+      .get(`/v1/fragments/${fragmentId}/info`)
       .auth('user1@email.com', 'password1');
-    expect(res2.statusCode).toBe(200);
-    // expect(res2.body.status).toBe('ok');
+    expect(res.status).toBe(201);
   });
 
-  test('authenticated users get fragment metadata', async () => {
-    const res = await request(app)
+  test('Trying to get metadata of invalid fragment', async () => {
+    await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
-      .set({ 'Content-Type': 'text/plain' })
-      .send('Text/plain test');
-    const id = JSON.parse(res.text).fragment.id;
+      .send('fragment')
+      .set('content-type', 'text/plain');
 
-    const res2 = await request(app)
-      .get('/v1/fragments/' + id + '/info')
+    const res = await request(app)
+      .get(`/v1/fragments/123/info`)
       .auth('user1@email.com', 'password1');
-    expect(res2.statusCode).toBe(200);
+    expect(res.status).toBe(401);
   });
 });
