@@ -9,18 +9,8 @@ module.exports = async (req, res) => {
   const textExt = ['md', 'html', 'txt', 'json'];
   const imgExt = ['png', 'jpg', 'webp', 'gif'];
 
-  const splitId = req.params.id.split('.');
-
   let fragmentId;
   let extension;
-
-  if (splitId.length > 1) {
-    fragmentId = splitId.slice(0, splitId.length - 1).join('.');
-    extension = splitId[splitId.length - 1];
-  } else {
-    fragmentId = req.params.id;
-    extension = null;
-  }
 
   console.log('Extension is: ' + extension);
 

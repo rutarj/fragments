@@ -1,35 +1,41 @@
-// src/routes/api/post.js
-
-const response = require('../../response');
+const { createSuccessResponse } = require('../../response');
+const { createErrorResponse } = require('../../response');
 const { Fragment } = require('../../model/fragment');
 const logger = require('../../logger');
-const url = process.env.API_URL;
 
 module.exports = async (req, res) => {
-  logger.debug('Post: ' + req.body);
-  if (!Fragment.isSupportedType(req.get('Content-Type'))) {
-    return res.status(415).json(response.createErrorResponse(415, 'Unsupported Media Type'));
-  }
-  try {
-    const fragment = new Fragment({
+  if (Buffer.isBuffer(req.body)) {
+    logger.info('v1/fragments POST route works');
+    // Get the headers from the request
+    const headers = req.headers;
+    // Access specific header properties
+    const contentType = headers['content-type'];
+    let fragmentData = new Fragment({
       ownerId: req.user,
-      type: req.get('content-type'),
+      type: contentType,
+      size: req.body.length,
     });
-    await fragment.save();
-    await fragment.setData(req.body);
+    logger.debug({ fragmentData }, 'A fragment is created');
+    const host = process.env.API_URL || req.headers.host;
+    // ADD Location header
+    res.location(host + `/v1/fragments/${fragmentData.id}`);
 
-    logger.debug('A New Fragment has been created: ' + JSON.stringify(fragment));
-    res.set('Content-Type', fragment.type);
-    res.setHeader('Location', url + '/v1/fragments/' + fragment.id);
+    // save fragment metadata
+    await fragmentData.save();
+    // save fragment data
+    await fragmentData.setData(req.body);
 
-    res.status(201).json(
-      response.createSuccessResponse({
-        status: 'ok',
-        fragment: fragment,
-      })
-    );
-  } catch (err) {
-    logger.error(`Error occurred while creating a new fragment: ${err.stack}`);
-    res.status(500).json(response.createErrorResponse(500, err));
+    res.status(201).json(createSuccessResponse({ fragment: fragmentData }));
+  } else {
+    // req.body is NOT Buffer
+    logger.warn('Content-Type is not supported for POST');
+    res
+      .status(415)
+      .json(
+        createErrorResponse(
+          415,
+          'The Content-Type of the fragment being sent with the request is not supported'
+        )
+      );
   }
 };

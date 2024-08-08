@@ -8,6 +8,7 @@ const { Fragment } = require('../../model/fragment');
 
 // Create a router on which to mount our API endpoints
 const router = express.Router();
+const { getFragments } = require('./get');
 const contentType = require('content-type');
 
 // Support sending various Content-Types on the body up to 5M in size
@@ -32,6 +33,7 @@ const rawBody = () =>
 // Use a raw body parser for POST, which will give a `Buffer` Object or `{}` at `req.body`
 // You can use Buffer.isBuffer(req.body) to test if it was parsed by the raw body parser.
 router.post('/fragments', rawBody(), require('./post'));
+router.get('/fragments', getFragments);
 
 //router.delete('/fragments/:id', require('./delete'));
 

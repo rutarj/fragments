@@ -9,14 +9,14 @@ const logger = require('../logger');
  * @returns {Function} - the middleware function to use for authentication
  */
 module.exports = (strategyName) => {
-  return function (req, res, next) {
+  return (req, res, next) => {
     /**
      * Define a custom callback to run after the user has been authenticated
      * where we can modify the way that errors are handled, and hash emails.
      * @param {Error} err - an error object
      * @param {string} email - an authenticated user's email address
      */
-    function callback(err, email) {
+    const callback = (err, email) => {
       // Something failed, let the the error handling middleware deal with it
       if (err) {
         logger.warn({ err }, 'error authenticating user');
@@ -25,7 +25,8 @@ module.exports = (strategyName) => {
 
       // Not authorized, return a 401
       if (!email) {
-        return res.status(401).json(createErrorResponse(401, 'Unauthorized'));
+        logger.warn({ email }, 'Unauthorized user trying to access!');
+        return res.status(401).json(createErrorResponse(401, 'Unauthorized user!!'));
       }
 
       // Authorized. Hash the user's email, attach to the request, and continue
@@ -34,7 +35,9 @@ module.exports = (strategyName) => {
 
       // Call the next function in the middleware chain (e.g. your route handler)
       next();
-    }
+    };
+
+    logger.debug({ strategyName }, 'Strategy Name');
 
     // Call the given passport strategy's authenticate() method, passing the
     // req, res, next objects.  Invoke our custom callback when done.
