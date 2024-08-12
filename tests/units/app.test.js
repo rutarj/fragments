@@ -11,7 +11,6 @@ describe('API Routes', () => {
       status: 'ok',
       author: 'Rutarj',
       githubUrl: 'https://github.com/rutarj/fragments',
-      version: '0.9.5',
     });
   });
 
