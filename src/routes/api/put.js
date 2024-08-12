@@ -3,15 +3,18 @@
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 // const express = require('express');
 const { Fragment } = require('../../model/fragment');
-// const contentType = require('content-type');
-const API_URL = process.env.API_URL;
 
-module.exports = async (req, res) => {
+const updateFragment = async (req, res) => {
   let fragment;
+  const { id } = req.params;
+  const fragmentData = req.body;
+  const ownerId = req.user;
+
+  let fragmentMetadata;
   try {
-    fragment = new Fragment(await Fragment.byId(req.user, req.params.id));
-    // frag = await fragment.getData();
-    // res.setHeader('Content-Type', fragment.type);
+    fragmentMetadata = await Fragment.byId(ownerId, id);
+
+    fragment = new Fragment(fragmentMetadata);
   } catch (error) {
     return res.status(404).json(createErrorResponse(`Fragment not found${error}`));
   }
@@ -22,13 +25,11 @@ module.exports = async (req, res) => {
     try {
       // frag = new Fragment({ ownerId: req.user, type: req.get('Content-Type') });
       await fragment.save();
-      await fragment.setData(req.body);
-      res.set('Location', API_URL + '/v1/fragments/' + fragment.id);
-      res.set('Content-Type', fragment.type);
+      await fragment.setData(fragmentData);
 
       res.status(201).json(
         createSuccessResponse({
-          fragment: fragment,
+          fragment: await Fragment.byId(ownerId, id),
         })
       );
     } catch (error) {
@@ -36,3 +37,5 @@ module.exports = async (req, res) => {
     }
   }
 };
+
+module.exports = { updateFragment };

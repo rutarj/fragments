@@ -22,7 +22,7 @@ describe('PUT /v1/fragments', () => {
     expect(res.body.status).toBe('error');
   });
 
-  test.skip('text/plain put test', async () => {
+  test('text/plain put test', async () => {
     const res = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')

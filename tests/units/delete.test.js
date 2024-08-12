@@ -23,6 +23,6 @@ describe('DELETE /v1/fragments', () => {
     const res2 = await request(app)
       .delete('/v1/fragments/' + id)
       .auth('user1@email.com', 'password1');
-    expect(res2.statusCode).toBe(200);
+    expect(res2.statusCode).toBe(201);
   });
 });

@@ -1,7 +1,8 @@
 // src/routes/api/get.js
 // const crypto = require('crypto');
 const { Fragment } = require('../../model/fragment');
-
+const logger = require('../../logger');
+const { createSuccessResponse, createErrorResponse } = require('../../response');
 /**
  * Get a list of fragments for the current user
  */
@@ -27,13 +28,16 @@ const { Fragment } = require('../../model/fragment');
 // };
 
 const getFragments = async (req, res) => {
-  let user = req.user;
-  const fragmentList = await Fragment.byUser(user, req.query.expand == 1 ? true : false);
+  logger.info(`Get all the fragments of user ${req.user}`);
+  const ownerId = req.user;
+  try {
+    const fragmentList = await Fragment.byUser(ownerId, req.query.expand == 1 ? true : false);
 
-  res.status(200).json({
-    status: 'ok',
-    fragments: fragmentList,
-  });
+    res.status(200).json(createSuccessResponse({ fragmentList }));
+  } catch (error) {
+    logger.error('Error in "getFragments"', error);
+    res.status(500).json(createErrorResponse(500, 'Internal Server Error'));
+  }
 };
 
 module.exports = {
