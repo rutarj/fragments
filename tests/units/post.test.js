@@ -47,7 +47,7 @@ describe('POST /fragments', () => {
       .send('This is fragment');
     expect(res.statusCode).toBe(201);
     expect(res.headers.location).toEqual(
-      `${process.env.API_URL}/v1/fragments/${JSON.parse(res.text).fragment.id}`
+      `${process.env.API_URL || 'http://localhost:8080'}/v1/fragments/${JSON.parse(res.text).fragment.id}`
     );
   });
 
