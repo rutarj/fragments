@@ -1,6 +1,6 @@
 POST http://localhost:8080/v1/fragments
 # We're sending a plain text fragment
-Content-Type: application/json
+Content-Type: text/plain
 # Include HTTP Basic Auth credentials
 [BasicAuth]
 user1@email.com:password1

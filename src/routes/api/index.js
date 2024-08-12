@@ -36,8 +36,8 @@ router.post('/fragments', rawBody(), require('./post'));
 router.get('/fragments', getFragments);
 router.get('/fragments/:id/info', require('./getInfo'));
 
-//router.delete('/fragments/:id', require('./delete'));
+router.delete('/fragments/:id', require('./delete'));
 
-//router.put('/fragments/:id', rawBody(), require('./put'));
+router.put('/fragments/:id', rawBody(), require('./put'));
 
 module.exports = router;
