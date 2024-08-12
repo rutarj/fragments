@@ -5,14 +5,14 @@ require('dotenv').config();
 
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 const logger = require('../../logger');
-const apiUrl = process.env.LOG_LEVEL || 'http://localhost:8080';
+
 // For setting the header, choosing the appropriate header
-// let apiUrl;
-// if (process.env.API_URL) {
-//   apiUrl = process.env.API_URL;
-// } else {
-//   apiUrl = 'http://localhost:8080';
-// }
+let apiUrl;
+if (process.env.API_URL) {
+  apiUrl = process.env.API_URL;
+} else {
+  apiUrl = 'http://localhost:8080';
+}
 
 /*
  * Create a fragment for the current user
