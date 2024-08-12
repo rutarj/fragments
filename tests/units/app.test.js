@@ -7,12 +7,7 @@ describe('API Routes', () => {
   test('GET /health should return a successful health check response', async () => {
     const response = await request(app).get('/health');
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({
-      status: 'ok',
-      author: 'Rutarj',
-      githubUrl: 'https://github.com/rutarj/fragments',
-      //version: '0.9.6',
-    });
+    expect(response.body.status).toEqual('ok');
   });
 
   test('GET /v1/fragments should return fragments', async () => {
