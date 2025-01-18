@@ -28,7 +28,7 @@ You can also test the microservice using the [fragments UI](https://github.com/A
 
 ## Author
 
-[Aryan Khurana](https://github.com/AryanK1511)
+[Aryan Khurana]((https://github.com/rutarj)
 
 Repository for CCP_2024 course 
 
