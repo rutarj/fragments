@@ -27,8 +27,8 @@ You can also test the microservice using the [fragments UI](https://github.com/A
 - [Using automations and scripts](./_docs/using_automations.md)
 
 ## Author
-
-[Aryan Khurana]((https://github.com/rutarj)
+Rutarj Shah
+(https://github.com/rutarj)
 
 Repository for CCP_2024 course 
 
